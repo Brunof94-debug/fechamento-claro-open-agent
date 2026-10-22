@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.cache/
+.tools/
+.runtime/
+.env*
+!.env.example
+vendor/
+*.log
+evidence/cadastro-para-aprovacao.png
+evidence/browser-export.json
+evidence/preview-pt.png

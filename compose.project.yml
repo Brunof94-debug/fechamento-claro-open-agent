@@ -1,0 +1,15 @@
+# Add to the official private bundle; each close gets its own data subdirectory.
+# Never mount credentials, home folders or other projects into the query engine.
+services:
+  driver:
+    volumes:
+      - type: bind
+        source: ${FECHAMENTO_DATA_DIR:?Set FECHAMENTO_DATA_DIR to this project's private staging directory}
+        target: /home/zetaris/customer-data/shared/fechamento
+        read_only: true
+  api:
+    volumes:
+      - type: bind
+        source: ${FECHAMENTO_DATA_DIR:?Set FECHAMENTO_DATA_DIR to this project's private staging directory}
+        target: /home/zetaris/customer-data/shared/fechamento
+        read_only: true

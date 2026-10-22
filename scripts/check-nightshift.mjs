@@ -1,0 +1,14 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {Nightshift} from '../src/nightshift.mjs';
+const config=JSON.parse(await readFile('.runtime/meterless-client.json','utf8'));
+const token=(await readFile(config.tokenFile,'utf8')).trim();
+const client=new Nightshift({baseURL:config.baseURL,token});
+const status=await client.status();
+const wrong=await new Nightshift({baseURL:config.baseURL,token:'invalid-fechamento-claro-test'}).status();
+if(status.state!=='online')throw new Error('Runtime not online: '+status.state);
+if(wrong.state!=='unauthorized')throw new Error('Wrong token was not rejected as unauthorized.');
+if(!status.modes.includes('meterless/local'))throw new Error('Local routing mode not advertised.');
+const response=await client.chat([{role:'user',content:'Reply only with the word READY. This is a local connection test with no personal data.'}],{maxTokens:30});
+const proof={status,wrongTokenState:wrong.state,response};
+await writeFile('evidence/nightshift-connection.json',JSON.stringify(proof,null,2),'utf8');
+console.log(JSON.stringify(proof,null,2));
