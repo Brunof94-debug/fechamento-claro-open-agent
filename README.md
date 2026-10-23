@@ -6,7 +6,7 @@ New project for the **Open Agent Hackathon 2026**, primary track **The Agent Tha
 
 ## Current state
 
-Working local prototype. Event registration is confirmed and the solo team is formed. A project draft is saved; final submission is tracked in [docs/READINESS.md](docs/READINESS.md).
+Working local prototype, **submitted on 23 October 2026** to **The Agent That Can Explain Why**. The event portal confirmed **Submitted 1/1**. Registration and the solo team are also confirmed. See [docs/READINESS.md](docs/READINESS.md) and [the submission dashboard](https://hackathon.genai.works/submissions?hackathon_id=019fd164-82b9-7382-a536-d9093c576ed2).
 
 The product compares order, settlement and refund sources, preserves exact source citations, and suggests the next evidence to request. Demonstration data is fictional. An accounting discrepancy is not proof of misconduct.
 

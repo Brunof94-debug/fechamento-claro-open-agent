@@ -1,0 +1,22 @@
+{
+  "event": "Open Agent Hackathon 2026",
+  "project": "Fechamento Claro",
+  "entrant": "Bruno Fernandes",
+  "githubAccount": "Brunof94-debug",
+  "track": "The Agent That Can Explain Why",
+  "status": "Submitted",
+  "visibleProgress": "Submitted 1/1",
+  "visibleConfirmation": "Submission submitted successfully!",
+  "observedAt": "2026-10-23 04:06:59 UTC",
+  "dashboardURL": "https://hackathon.genai.works/submissions?hackathon_id=019fd164-82b9-7382-a536-d9093c576ed2",
+  "repository": "https://github.com/Brunof94-debug/fechamento-claro-open-agent",
+  "implementationCommit": "e142f01fc85b5f32fd451f69a8385f7c268c4c0a",
+  "video": {
+    "filename": "fechamento-claro-demo.mp4",
+    "durationSeconds": 147.01442176870748
+  },
+  "pitchDeck": {
+    "filename": "fechamento-claro-open-agent-2026-10-23-v2.pptx",
+    "slides": 6
+  }
+}

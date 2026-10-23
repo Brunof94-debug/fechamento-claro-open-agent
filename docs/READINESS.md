@@ -8,7 +8,7 @@ Started 2026-10-22T00:34:31Z (21 October, 21:34 Brasília), after the official b
 | Entrant | Bruno Fernandes; Accounting graduate, intermediate programming, Brazil. Manual profile used after LinkedIn import failed. No employment history was invented. |
 | Team | **Fechamento Claro**, solo, **FORMED**, 1/1. Invitations paused. Team ID `01a16132-49df-7697-a2a4-0851c52b8e49`. |
 | Required social steps | Official GenAI Works LinkedIn and X profiles followed; both confirmed by the event portal. |
-| Project submission | Existing track draft saved with the narrated 2m27 video and six-slide pitch attached. **Submitted 0/1** at the latest portal check; no final receipt yet. |
+| Project submission | **SUBMITTED on 23 October 2026.** The portal displayed **Submission submitted successfully!**, the track card changed to **Submitted**, and progress changed to **Submitted 1/1**. Narrated 2m27 video, six-slide pitch and public repository attached. Sanitized state record: `evidence/submission.json`. The account screenshot remains private. |
 | Public source and preview | [Selected GitHub account and source](https://github.com/Brunof94-debug/fechamento-claro-open-agent); [static browser preview](https://brunof94-debug.github.io/fechamento-claro-open-agent/). |
 | Cursor | Actual authenticated Ask-mode review completed using CLI `2026.10.19-6bbf2c4`. Resulting fixes and scope: [CURSOR-REVIEW.md](CURSOR-REVIEW.md). |
 | Zetaris | Genuine local Docker platform and official JDBC driver `2.4.3.1-7eff043`. Three CSV sources registered in the Lightning catalog. All source rows read back, cross-source SQL executed, and every counted amount matched the independent cent calculation. Sanitized proof: `evidence/zetaris-close.json`. |
