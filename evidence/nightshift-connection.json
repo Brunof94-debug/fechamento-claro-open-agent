@@ -1,0 +1,59 @@
+{
+  "status": {
+    "state": "online",
+    "baseURL": "http://127.0.0.1:8088/v1",
+    "modes": [
+      "meterless/auto",
+      "meterless/fast",
+      "meterless/deep",
+      "meterless/cheap",
+      "meterless/local",
+      "meterless/fusion",
+      "meterless/cluster",
+      "meterless/text",
+      "meterless/code",
+      "meterless/vision",
+      "meterless/perception",
+      "meterless/image",
+      "meterless/video",
+      "meterless/speech",
+      "meterless/transcribe",
+      "meterless/music",
+      "meterless/embed",
+      "meterless/judge"
+    ]
+  },
+  "wrongTokenState": "unauthorized",
+  "response": {
+    "content": "READY",
+    "receipt": {
+      "provider": "Meterless Nightshift",
+      "route": "meterless/local",
+      "routedMode": "local",
+      "model": "local-runtime/llama-3.1-8b-instruct",
+      "requestId": "chatcmpl-0a0c0b0d-f3b2-4cf4-8919-4de17489a859",
+      "receiptId": "rcpt_req_xf6mt6x1",
+      "winningRoute": {
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "label": "Llama 3.1 8B (Runtime GGUF)",
+        "provider": "local-runtime",
+        "kind": "local",
+        "tier": "B"
+      },
+      "privacy": {
+        "path": "local-only",
+        "redaction": {
+          "applied": false,
+          "spans": 0
+        }
+      },
+      "usage": {
+        "prompt_tokens": 138,
+        "completion_tokens": 2,
+        "total_tokens": 140
+      },
+      "elapsedMs": 308,
+      "generatedAt": "2026-10-23T03:52:37.311Z"
+    }
+  }
+}

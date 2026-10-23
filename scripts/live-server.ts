@@ -46,7 +46,14 @@ const server=createServer(async(req,res)=>{
         if(!session)return json(res,404,{error:'Run the close again before asking a question.'});
         const client=await runtime();
         if(!client)return json(res,503,{error:'Connect Nightshift locally before using the investigator.',code:'not-configured'});
-        const answer=await investigate(input.question,session.close,client);
+        const modelTrace:any[]=[];
+        const observed={chat:async(...args:any[])=>{const response=await client.chat(...args as [any,any]);modelTrace.push(response);return response;}};
+        let answer;
+        try {answer=await investigate(input.question,session.close,observed);}
+        finally {
+          await mkdir('.runtime/investigations',{recursive:true});
+          await writeFile(`.runtime/investigations/${input.run}-model.json`,JSON.stringify(modelTrace,null,2),'utf8');
+        }
         session.investigations.push(answer);
         await mkdir('.runtime/investigations',{recursive:true});
         await writeFile(`.runtime/investigations/${input.run}.json`,JSON.stringify(session,null,2),'utf8');

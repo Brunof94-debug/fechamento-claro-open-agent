@@ -9,6 +9,7 @@ if(status.state!=='online')throw new Error('Runtime not online: '+status.state);
 if(wrong.state!=='unauthorized')throw new Error('Wrong token was not rejected as unauthorized.');
 if(!status.modes.includes('meterless/local'))throw new Error('Local routing mode not advertised.');
 const response=await client.chat([{role:'user',content:'Reply only with the word READY. This is a local connection test with no personal data.'}],{maxTokens:30});
+if(response.content.trim()!=='READY')throw new Error('The local model did not pass the known-answer connection test. No success proof was written.');
 const proof={status,wrongTokenState:wrong.state,response};
 await writeFile('evidence/nightshift-connection.json',JSON.stringify(proof,null,2),'utf8');
 console.log(JSON.stringify(proof,null,2));

@@ -1,0 +1,1195 @@
+[
+  {
+    "question": "Why does A-1006 need a source review?",
+    "findings": [
+      {
+        "key": "orders:A-1006",
+        "id": "A-1006",
+        "evidence": [
+          {
+            "source": "orders",
+            "file": "orders.csv",
+            "line": 7,
+            "raw": [
+              "A-1006",
+              "9000",
+              "270",
+              "BRL",
+              "2026-10-20"
+            ],
+            "columns": [
+              "order_id",
+              "gross_cents",
+              "fee_cents",
+              "currency",
+              "due_date"
+            ]
+          },
+          {
+            "source": "settlements",
+            "file": "settlements.csv",
+            "line": 7,
+            "raw": [
+              "S-006",
+              "A-1006",
+              "8730",
+              "BRL",
+              "2026-10-20"
+            ],
+            "columns": [
+              "txn_id",
+              "order_id",
+              "net_cents",
+              "currency",
+              "posted_date"
+            ]
+          },
+          {
+            "source": "settlements",
+            "file": "settlements.csv",
+            "line": 8,
+            "raw": [
+              "S-006",
+              "A-1006",
+              "8730",
+              "BRL",
+              "2026-10-20"
+            ],
+            "columns": [
+              "txn_id",
+              "order_id",
+              "net_cents",
+              "currency",
+              "posted_date"
+            ]
+          }
+        ],
+        "excludedFutureRows": [],
+        "status": "review",
+        "reason": "Duplicate identifiers must be resolved before counting this order.",
+        "nextChecks": [
+          "resolve_source_conflict"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": 0,
+        "tool": "Meterless H-MEM",
+        "input": "A-1006",
+        "result": {
+          "mode": "exact-id-tool",
+          "findings": [
+            {
+              "key": "orders:A-1006",
+              "status": "review",
+              "reason": "Duplicate identifiers must be resolved before counting this order."
+            }
+          ],
+          "trace": {
+            "retrievalReason": "hybrid ranking for \"A-1006\" (domain: general)",
+            "strategy": "comprehensive",
+            "scores": {
+              "mem-7": 0.1835,
+              "mem-1": 0.14
+            }
+          }
+        }
+      },
+      {
+        "step": 1,
+        "tool": "inspect_case",
+        "key": "orders:A-1006",
+        "citations": [
+          "orders.csv:7",
+          "settlements.csv:7",
+          "settlements.csv:8"
+        ],
+        "expectedCents": null,
+        "receivedCents": null,
+        "differenceCents": null
+      }
+    ],
+    "receipts": [
+      {
+        "provider": "Meterless Nightshift",
+        "route": "meterless/local",
+        "routedMode": "local",
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "requestId": "chatcmpl-03ecd72c-55dc-45f6-bf25-4db78c71c570",
+        "receiptId": "rcpt_req_rvurwke0",
+        "winningRoute": {
+          "model": "local-runtime/llama-3.1-8b-instruct",
+          "label": "Llama 3.1 8B (Runtime GGUF)",
+          "provider": "local-runtime",
+          "kind": "local",
+          "tier": "B"
+        },
+        "privacy": {
+          "path": "local-only",
+          "redaction": {
+            "applied": false,
+            "spans": 0
+          }
+        },
+        "usage": {
+          "prompt_tokens": 1354,
+          "completion_tokens": 23,
+          "total_tokens": 1377
+        },
+        "elapsedMs": 4925,
+        "generatedAt": "2026-10-23T03:55:45.068Z"
+      },
+      {
+        "provider": "Meterless Nightshift",
+        "route": "meterless/local",
+        "routedMode": "local",
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "requestId": "chatcmpl-2b33b242-aad3-4ef6-bc50-9d9fc04c7f80",
+        "receiptId": "rcpt_req_fhs98tuk",
+        "winningRoute": {
+          "model": "local-runtime/llama-3.1-8b-instruct",
+          "label": "Llama 3.1 8B (Runtime GGUF)",
+          "provider": "local-runtime",
+          "kind": "local",
+          "tier": "B"
+        },
+        "privacy": {
+          "path": "local-only",
+          "redaction": {
+            "applied": false,
+            "spans": 0
+          }
+        },
+        "usage": {
+          "prompt_tokens": 442,
+          "completion_tokens": 7,
+          "total_tokens": 449
+        },
+        "elapsedMs": 408,
+        "generatedAt": "2026-10-23T03:55:45.480Z"
+      },
+      {
+        "provider": "Meterless Nightshift",
+        "route": "meterless/local",
+        "routedMode": "local",
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "requestId": "chatcmpl-ef3a1650-227d-4fa8-83dc-a1316b4ae0df",
+        "receiptId": "rcpt_req_awmwpm1m",
+        "winningRoute": {
+          "model": "local-runtime/llama-3.1-8b-instruct",
+          "label": "Llama 3.1 8B (Runtime GGUF)",
+          "provider": "local-runtime",
+          "kind": "local",
+          "tier": "B"
+        },
+        "privacy": {
+          "path": "local-only",
+          "redaction": {
+            "applied": false,
+            "spans": 0
+          }
+        },
+        "usage": {
+          "prompt_tokens": 1602,
+          "completion_tokens": 15,
+          "total_tokens": 1617
+        },
+        "elapsedMs": 5682,
+        "generatedAt": "2026-10-23T03:55:51.163Z"
+      }
+    ],
+    "ledger": [
+      {
+        "memoryId": "mem-1",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740141,
+        "newState": {
+          "id": "mem-1",
+          "content": "As-of close. Expected net = order gross - explicitly supplied fee - posted refunds. Fees are not refunded. Future postings are excluded from arithmetic and listed separately. Duplicate identifiers anywhere in a source quarantine the affected order. Unexplained totals include only due orders; expected/observed include all non-review orders, with due and not-due subtotals. No currencies are converted. Source records are not independently verified.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740140,
+          "lastAccessed": 1792727740140,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "accounting"
+          ],
+          "confidence": 1,
+          "source": "closing-policy:explicit",
+          "provenance": {
+            "origin": "manual",
+            "learnedAt": 1792727740140,
+            "label": "closing-policy:explicit"
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "expected",
+            "fees",
+            "future",
+            "duplicate",
+            "unexplained",
+            "source"
+          ],
+          "relatedTo": []
+        }
+      },
+      {
+        "memoryId": "mem-2",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740141,
+        "newState": {
+          "id": "mem-2",
+          "content": "Order or transaction A-1001. Status matched. The stated fee explains the gross-to-net difference. Gross 10000 cents; stated fees 300 cents; posted refunds 0 cents; expected 9700 cents; received 9700 cents; difference 0 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740141,
+          "lastAccessed": 1792727740141,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1001",
+            "matched"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1001",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740141,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:2",
+              "settlements.csv:2"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": []
+        }
+      },
+      {
+        "memoryId": "mem-3",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740141,
+        "newState": {
+          "id": "mem-3",
+          "content": "Order or transaction A-1002. Status shortfall. The received amount is lower than expected after the stated fee and refunds. The cause remains unproven. Gross 20000 cents; stated fees 600 cents; posted refunds 0 cents; expected 19400 cents; received 18400 cents; difference 1000 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740141,
+          "lastAccessed": 1792727740141,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1002",
+            "shortfall"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1002",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740141,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:3",
+              "settlements.csv:3"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-4",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740141,
+        "newState": {
+          "id": "mem-4",
+          "content": "Order or transaction A-1003. Status matched. Split settlements add up to the expected net. Gross 15000 cents; stated fees 450 cents; posted refunds 0 cents; expected 14550 cents; received 14550 cents; difference 0 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740141,
+          "lastAccessed": 1792727740141,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1003",
+            "matched"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1003",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740141,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:4",
+              "settlements.csv:4",
+              "settlements.csv:5"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "split",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-5",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740142,
+        "newState": {
+          "id": "mem-5",
+          "content": "Order or transaction A-1004. Status matched. The refund and stated fee explain the net settlement. Gross 8000 cents; stated fees 240 cents; posted refunds 2000 cents; expected 5760 cents; received 5760 cents; difference 0 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740141,
+          "lastAccessed": 1792727740141,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1004",
+            "matched"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1004",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740141,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:5",
+              "settlements.csv:6",
+              "refunds.csv:2"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-6",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740142,
+        "newState": {
+          "id": "mem-6",
+          "content": "Order or transaction A-1005. Status unsettled. The due date has passed; no settlement was posted on or before this closing date in these sources. Gross 12000 cents; stated fees 360 cents; posted refunds 0 cents; expected 11640 cents; received 0 cents; difference 11640 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740142,
+          "lastAccessed": 1792727740142,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1005",
+            "unsettled"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1005",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740142,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:6"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-7",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740142,
+        "newState": {
+          "id": "mem-7",
+          "content": "Order or transaction A-1006. Status review. Duplicate identifiers must be resolved before counting this order. Amounts not counted pending source review.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740142,
+          "lastAccessed": 1792727740142,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1006",
+            "review"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1006",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740142,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:7",
+              "settlements.csv:7",
+              "settlements.csv:8"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "duplicate",
+            "amounts"
+          ],
+          "relatedTo": [
+            "mem-1",
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-8",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740142,
+        "newState": {
+          "id": "mem-8",
+          "content": "Order or transaction A-1007. Status pending. The contractual settlement date is after this close. The remaining balance is not due yet. Gross 6000 cents; stated fees 180 cents; posted refunds 0 cents; expected 5820 cents; received 0 cents; difference 5820 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740142,
+          "lastAccessed": 1792727740142,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1007",
+            "pending"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1007",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740142,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:8"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5",
+            "mem-6"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-9",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727740142,
+        "newState": {
+          "id": "mem-9",
+          "content": "Order or transaction S-008. Status review. Settlement has no matching order. Supply the missing order before counting it. Amounts not counted pending source review.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727740142,
+          "lastAccessed": 1792727740142,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "S-008",
+            "review"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:settlements:S-008",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727740142,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "settlements.csv:10"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "settlement",
+            "supply",
+            "amounts"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5",
+            "mem-6"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-7",
+        "action": "read",
+        "actor": "clear-close",
+        "timestamp": 1792727745072,
+        "details": {
+          "query": "A-1006"
+        }
+      },
+      {
+        "memoryId": "mem-1",
+        "action": "read",
+        "actor": "clear-close",
+        "timestamp": 1792727745072,
+        "details": {
+          "query": "A-1006"
+        }
+      }
+    ],
+    "modelUsed": true,
+    "explanationPolicy": "The local model selected tools and evidence. Amounts, source citations and final findings are generated from checked rules; source truth is not independently verified."
+  },
+  {
+    "question": "Is A-1007 overdue on the closing date?",
+    "findings": [
+      {
+        "key": "orders:A-1007",
+        "id": "A-1007",
+        "evidence": [
+          {
+            "source": "orders",
+            "file": "orders.csv",
+            "line": 8,
+            "raw": [
+              "A-1007",
+              "6000",
+              "180",
+              "BRL",
+              "2026-10-22"
+            ],
+            "columns": [
+              "order_id",
+              "gross_cents",
+              "fee_cents",
+              "currency",
+              "due_date"
+            ]
+          }
+        ],
+        "excludedFutureRows": [
+          {
+            "source": "settlements",
+            "file": "settlements.csv",
+            "line": 9,
+            "raw": [
+              "S-007",
+              "A-1007",
+              "5820",
+              "BRL",
+              "2026-10-22"
+            ],
+            "columns": [
+              "txn_id",
+              "order_id",
+              "net_cents",
+              "currency",
+              "posted_date"
+            ]
+          }
+        ],
+        "status": "pending",
+        "reason": "The contractual settlement date is after this close. The remaining balance is not due yet.",
+        "gross": 6000,
+        "fee": 180,
+        "refunds": 0,
+        "expected": 5820,
+        "observed": 0,
+        "difference": 5820,
+        "dueDate": "2026-10-22",
+        "nextChecks": [
+          "recheck_on_due_date"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": 0,
+        "tool": "Meterless H-MEM",
+        "input": "A-1007",
+        "result": {
+          "mode": "exact-id-tool",
+          "findings": [
+            {
+              "key": "orders:A-1007",
+              "status": "pending",
+              "reason": "The contractual settlement date is after this close. The remaining balance is not due yet."
+            }
+          ],
+          "trace": {
+            "retrievalReason": "hybrid ranking for \"A-1007\" (domain: general)",
+            "strategy": "minimal",
+            "scores": {
+              "mem-8": 0.1556
+            }
+          }
+        }
+      },
+      {
+        "step": 1,
+        "tool": "inspect_case",
+        "key": "orders:A-1007",
+        "citations": [
+          "orders.csv:8"
+        ],
+        "expectedCents": 5820,
+        "receivedCents": 0,
+        "differenceCents": 5820
+      }
+    ],
+    "receipts": [
+      {
+        "provider": "Meterless Nightshift",
+        "route": "meterless/local",
+        "routedMode": "local",
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "requestId": "chatcmpl-c23c54a8-ac28-42a2-af80-162a9afb771e",
+        "receiptId": "rcpt_req_62vjg3i1",
+        "winningRoute": {
+          "model": "local-runtime/llama-3.1-8b-instruct",
+          "label": "Llama 3.1 8B (Runtime GGUF)",
+          "provider": "local-runtime",
+          "kind": "local",
+          "tier": "B"
+        },
+        "privacy": {
+          "path": "local-only",
+          "redaction": {
+            "applied": false,
+            "spans": 0
+          }
+        },
+        "usage": {
+          "prompt_tokens": 554,
+          "completion_tokens": 7,
+          "total_tokens": 561
+        },
+        "elapsedMs": 879,
+        "generatedAt": "2026-10-23T03:55:52.045Z"
+      },
+      {
+        "provider": "Meterless Nightshift",
+        "route": "meterless/local",
+        "routedMode": "local",
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "requestId": "chatcmpl-ba17da6a-aa6c-4e3e-90c0-b885f8e6757c",
+        "receiptId": "rcpt_req_9vwth26e",
+        "winningRoute": {
+          "model": "local-runtime/llama-3.1-8b-instruct",
+          "label": "Llama 3.1 8B (Runtime GGUF)",
+          "provider": "local-runtime",
+          "kind": "local",
+          "tier": "B"
+        },
+        "privacy": {
+          "path": "local-only",
+          "redaction": {
+            "applied": false,
+            "spans": 0
+          }
+        },
+        "usage": {
+          "prompt_tokens": 615,
+          "completion_tokens": 7,
+          "total_tokens": 622
+        },
+        "elapsedMs": 520,
+        "generatedAt": "2026-10-23T03:55:52.566Z"
+      },
+      {
+        "provider": "Meterless Nightshift",
+        "route": "meterless/local",
+        "routedMode": "local",
+        "model": "local-runtime/llama-3.1-8b-instruct",
+        "requestId": "chatcmpl-1c885df1-e50d-4e7b-a49e-b641ad320e9c",
+        "receiptId": "rcpt_req_wkqoeotl",
+        "winningRoute": {
+          "model": "local-runtime/llama-3.1-8b-instruct",
+          "label": "Llama 3.1 8B (Runtime GGUF)",
+          "provider": "local-runtime",
+          "kind": "local",
+          "tier": "B"
+        },
+        "privacy": {
+          "path": "local-only",
+          "redaction": {
+            "applied": false,
+            "spans": 0
+          }
+        },
+        "usage": {
+          "prompt_tokens": 1562,
+          "completion_tokens": 19,
+          "total_tokens": 1581
+        },
+        "elapsedMs": 5083,
+        "generatedAt": "2026-10-23T03:55:57.650Z"
+      }
+    ],
+    "ledger": [
+      {
+        "memoryId": "mem-1",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751163,
+        "newState": {
+          "id": "mem-1",
+          "content": "As-of close. Expected net = order gross - explicitly supplied fee - posted refunds. Fees are not refunded. Future postings are excluded from arithmetic and listed separately. Duplicate identifiers anywhere in a source quarantine the affected order. Unexplained totals include only due orders; expected/observed include all non-review orders, with due and not-due subtotals. No currencies are converted. Source records are not independently verified.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751163,
+          "lastAccessed": 1792727751163,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "accounting"
+          ],
+          "confidence": 1,
+          "source": "closing-policy:explicit",
+          "provenance": {
+            "origin": "manual",
+            "learnedAt": 1792727751163,
+            "label": "closing-policy:explicit"
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "expected",
+            "fees",
+            "future",
+            "duplicate",
+            "unexplained",
+            "source"
+          ],
+          "relatedTo": []
+        }
+      },
+      {
+        "memoryId": "mem-2",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751164,
+        "newState": {
+          "id": "mem-2",
+          "content": "Order or transaction A-1001. Status matched. The stated fee explains the gross-to-net difference. Gross 10000 cents; stated fees 300 cents; posted refunds 0 cents; expected 9700 cents; received 9700 cents; difference 0 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751163,
+          "lastAccessed": 1792727751163,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1001",
+            "matched"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1001",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751163,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:2",
+              "settlements.csv:2"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": []
+        }
+      },
+      {
+        "memoryId": "mem-3",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751164,
+        "newState": {
+          "id": "mem-3",
+          "content": "Order or transaction A-1002. Status shortfall. The received amount is lower than expected after the stated fee and refunds. The cause remains unproven. Gross 20000 cents; stated fees 600 cents; posted refunds 0 cents; expected 19400 cents; received 18400 cents; difference 1000 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751164,
+          "lastAccessed": 1792727751164,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1002",
+            "shortfall"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1002",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751164,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:3",
+              "settlements.csv:3"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-4",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751164,
+        "newState": {
+          "id": "mem-4",
+          "content": "Order or transaction A-1003. Status matched. Split settlements add up to the expected net. Gross 15000 cents; stated fees 450 cents; posted refunds 0 cents; expected 14550 cents; received 14550 cents; difference 0 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751164,
+          "lastAccessed": 1792727751164,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1003",
+            "matched"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1003",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751164,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:4",
+              "settlements.csv:4",
+              "settlements.csv:5"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "split",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-5",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751164,
+        "newState": {
+          "id": "mem-5",
+          "content": "Order or transaction A-1004. Status matched. The refund and stated fee explain the net settlement. Gross 8000 cents; stated fees 240 cents; posted refunds 2000 cents; expected 5760 cents; received 5760 cents; difference 0 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751164,
+          "lastAccessed": 1792727751164,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1004",
+            "matched"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1004",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751164,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:5",
+              "settlements.csv:6",
+              "refunds.csv:2"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-6",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751164,
+        "newState": {
+          "id": "mem-6",
+          "content": "Order or transaction A-1005. Status unsettled. The due date has passed; no settlement was posted on or before this closing date in these sources. Gross 12000 cents; stated fees 360 cents; posted refunds 0 cents; expected 11640 cents; received 0 cents; difference 11640 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751164,
+          "lastAccessed": 1792727751164,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1005",
+            "unsettled"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1005",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751164,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:6"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-7",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751165,
+        "newState": {
+          "id": "mem-7",
+          "content": "Order or transaction A-1006. Status review. Duplicate identifiers must be resolved before counting this order. Amounts not counted pending source review.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751164,
+          "lastAccessed": 1792727751164,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1006",
+            "review"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1006",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751164,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:7",
+              "settlements.csv:7",
+              "settlements.csv:8"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "duplicate",
+            "amounts"
+          ],
+          "relatedTo": [
+            "mem-1",
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-8",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751165,
+        "newState": {
+          "id": "mem-8",
+          "content": "Order or transaction A-1007. Status pending. The contractual settlement date is after this close. The remaining balance is not due yet. Gross 6000 cents; stated fees 180 cents; posted refunds 0 cents; expected 5820 cents; received 0 cents; difference 5820 cents.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751165,
+          "lastAccessed": 1792727751165,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "A-1007",
+            "pending"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:orders:A-1007",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751165,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "orders.csv:8"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "gross"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5",
+            "mem-6"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-9",
+        "action": "create",
+        "actor": "clear-close",
+        "timestamp": 1792727751165,
+        "newState": {
+          "id": "mem-9",
+          "content": "Order or transaction S-008. Status review. Settlement has no matching order. Supply the missing order before counting it. Amounts not counted pending source review.",
+          "type": "factual",
+          "layer": "working",
+          "timestamp": 1792727751165,
+          "lastAccessed": 1792727751165,
+          "accessCount": 0,
+          "tags": [
+            "project:clear-close",
+            "S-008",
+            "review"
+          ],
+          "confidence": 1,
+          "source": "recorded-finding:settlements:S-008",
+          "provenance": {
+            "origin": "document",
+            "learnedAt": 1792727751165,
+            "label": "Rule result from cited rows; sources not independently verified",
+            "refs": [
+              "settlements.csv:10"
+            ]
+          },
+          "domain": "clear-close",
+          "namespace": "clear-close/facts",
+          "entities": [
+            "order",
+            "status",
+            "settlement",
+            "supply",
+            "amounts"
+          ],
+          "relatedTo": [
+            "mem-2",
+            "mem-3",
+            "mem-4",
+            "mem-5",
+            "mem-6"
+          ]
+        }
+      },
+      {
+        "memoryId": "mem-8",
+        "action": "read",
+        "actor": "clear-close",
+        "timestamp": 1792727752045,
+        "details": {
+          "query": "A-1007"
+        }
+      }
+    ],
+    "modelUsed": true,
+    "explanationPolicy": "The local model selected tools and evidence. Amounts, source citations and final findings are generated from checked rules; source truth is not independently verified."
+  }
+]

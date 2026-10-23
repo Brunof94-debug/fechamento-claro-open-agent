@@ -19,7 +19,7 @@ export class Nightshift {
     if(typeof this.#token!=='string'||!this.#token.trim()||this.#token==='rt-local')throw new RuntimeError('unauthorized','Connect the real Nightshift Runtime token on this computer.');
     let response;
     try {
-      response=await this.fetchImpl(this.baseURL+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+this.#token,'meterless-app':'fechamento-claro',...(body?{'Content-Type':'application/json','meterless-scope':'user'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(body?180000:10000)});
+      response=await this.fetchImpl(this.baseURL+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+this.#token,'meterless-app':'fechamento-claro',...(body?{'Content-Type':'application/json','meterless-scope':'user','meterless-tier-split':'off'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(body?180000:10000)});
     }catch {throw new RuntimeError('offline','Nightshift did not answer on its local Runtime endpoint.');}
     if([401,403].includes(response.status))throw new RuntimeError('unauthorized','Nightshift refused the Runtime token. Reconnect locally.');
     if(!response.ok)throw new RuntimeError('unavailable',`Nightshift could not serve this request (HTTP ${response.status}). No substitute model was used.`);
@@ -33,12 +33,15 @@ export class Nightshift {
       return modes.length?{state:'online',baseURL:this.baseURL,modes}:{state:'offline',baseURL:this.baseURL,modes:[]};
     }catch(error){return {state:error.code||'offline',baseURL:this.baseURL,modes:[]};}
   }
-  async chat(messages,{maxTokens=400}={}) {
+  async chat(messages,{maxTokens=400,json=false,jsonSchema=null}={}) {
     const start=performance.now();
-    const {data,requestId}=await this.#request('/chat/completions',{model:'meterless/local',messages,temperature:0,max_tokens:maxTokens,stream:false});
+    const responseFormat=jsonSchema?{type:'json_schema',json_schema:{name:'investigation_choice',strict:true,schema:jsonSchema}}:json?{type:'json_object'}:null;
+    const {data,requestId}=await this.#request('/chat/completions',{model:'meterless/local',messages,temperature:0,max_tokens:maxTokens,stream:false,...(responseFormat?{response_format:responseFormat}:{})});
     const content=data.choices?.[0]?.message?.content;
     if(typeof content!=='string'||!content.trim())throw new RuntimeError('unavailable','Nightshift returned no text. No explanation was generated.');
-    return {content,receipt:{provider:'Meterless Nightshift',route:'meterless/local',model:data.model||null,requestId,usage:data.usage||null,elapsedMs:Math.round(performance.now()-start),generatedAt:new Date().toISOString()}};
+    const proof=data.meterless;
+    if(!proof||proof.winning_route?.kind!=='local'||proof.privacy?.path!=='local-only')throw new RuntimeError('non-local','Nightshift did not confirm local execution. No conclusion was accepted.');
+    return {content,receipt:{provider:'Meterless Nightshift',route:'meterless/local',routedMode:proof?.mode||null,model:data.model||null,requestId:requestId||data.id||null,receiptId:proof?.receipt_id||null,winningRoute:proof?.winning_route||null,privacy:proof?.privacy||null,usage:data.usage||null,elapsedMs:Math.round(performance.now()-start),generatedAt:new Date().toISOString()}};
   }
 }
 export async function detectRuntime(token) {

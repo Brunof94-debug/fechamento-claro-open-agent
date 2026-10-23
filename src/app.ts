@@ -21,12 +21,14 @@ function renderSources(){
   for(const id of ['example','cutoff','currency'])$('#'+id).disabled=working;
 }
 function updateMode(){
+  const state=t(({online:'assistant connected locally',offline:'assistant offline',unauthorized:'assistant connection needs renewal','not-configured':'assistant connection pending',unavailable:'assistant unavailable'} as any)[runtimeState]||runtimeState,({online:'assistente conectado localmente',offline:'assistente fora do ar',unauthorized:'a conexão do assistente precisa ser renovada','not-configured':'conexão do assistente pendente',unavailable:'assistente indisponível'} as any)[runtimeState]||runtimeState);
   $('[data-i="private"]').textContent=live?t('Processing on this computer','Processamento neste computador'):t('Files stay in this tab','Arquivos ficam nesta aba');
-  $('[data-i="mode"]').textContent=live?t(`Connected local workspace · Zetaris queries run on investigation. Nightshift: ${runtimeState}.`,`Espaço local conectado · O Zetaris é consultado ao investigar. Nightshift: ${runtimeState}.`):t('Browser preview · rule checks and evidence search. Run the local workspace for Zetaris and the Nightshift investigator.','Prévia no navegador · conferência por regras e busca de evidências. Execute o espaço local para usar Zetaris e o investigador Nightshift.');
+  $('[data-i="mode"]').textContent=live?t(`${liveClose?'Zetaris read the sources and the amounts passed the independent check.':'Local workspace. Sources go through Zetaris when you investigate.'} Nightshift: ${state}.`,`${liveClose?'O Zetaris leu as fontes e os valores passaram pela conferência independente.':'Espaço local. As fontes passam pelo Zetaris ao investigar.'} Nightshift: ${state}.`):t('Browser preview · rule checks and evidence search. Run the local workspace for Zetaris and the Nightshift investigator.','Prévia no navegador · conferência por regras e busca de evidências. Execute o espaço local para usar Zetaris e o investigador Nightshift.');
   $('[data-i="emptyText"]').textContent=live?t('Try the fictional example. Source files are processed by Zetaris on this computer. Questions use the local Nightshift model.','Experimente o exemplo fictício. O Zetaris processa os arquivos neste computador. As perguntas usam o modelo local do Nightshift.'):t('Add the three sources, or try the fictional example. File contents are processed in this tab.','Adicione as três fontes ou use o exemplo fictício. O conteúdo dos arquivos é processado nesta aba.');
   $('[data-i="memoryHint"]').textContent=live?t('The investigator selects evidence tools through Nightshift. Every accepted finding links to inspected source rows. Amounts come from checked rules; source truth is not independently verified.','O investigador seleciona ferramentas de evidência pelo Nightshift. Cada conclusão aceita aponta para linhas inspecionadas. Os valores vêm de regras conferidas; a veracidade das fontes não é auditada.'):t('Meterless H-MEM retrieves recorded rule results. Exact references open the matching record. This preview uses evidence search.','O Meterless H-MEM recupera resultados registrados pelas regras. Referências exatas abrem o registro correspondente. Esta prévia usa busca de evidências.');
   $('[data-i="recall"]').textContent=working?t('Working…','Processando…'):live?t('Investigate question','Investigar pergunta'):t('Find evidence','Buscar evidências');
   $('#ask button').disabled=working;
+  $('#refresh').hidden=!live;$('#refresh').disabled=working;$('#refresh').textContent=t('Check assistant connection','Conferir a conexão do assistente');
 }
 async function api(path:string,input:any){
   const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)});
@@ -95,6 +97,7 @@ $('#ask').onsubmit=async(event:any)=>{
     working=true;renderSources();updateMode();$('#answer').textContent=t('Nightshift is selecting and inspecting evidence. A cold model can take a few minutes.','O Nightshift está selecionando e inspecionando evidências. A primeira execução pode levar alguns minutos.');
     try{
       liveAnswer=await api('/api/ask',{run:liveClose.run,question:$('#question').value});
+      runtimeState='online';
       const checkNames:any={request_processor_statement:t('Request the processor statement','Solicitar o extrato da operadora'),check_fee_contract:t('Check the fee contract','Conferir o contrato de taxas'),check_settlement_schedule:t('Check the settlement schedule','Conferir o prazo de recebimento'),resolve_source_conflict:t('Resolve the source conflict','Resolver o conflito da fonte'),recheck_on_due_date:t('Recheck on the contractual due date','Conferir na data contratual'),retain_source_rows:t('Retain the cited records','Guardar os registros citados')};
       $('#answer').innerHTML=liveAnswer.findings.map((finding:any)=>`<p><strong>${esc(finding.id)}</strong> · ${esc(explain(finding))} ${finding.difference===undefined?'':`<b>${money(finding.difference)}</b>`}<br><small>${finding.evidence.map((row:any)=>esc(`${row.file}:${row.line}`)).join(' · ')}</small><br>${t('Next check:','Próxima conferência:')} ${finding.nextChecks.map((check:string)=>esc(checkNames[check]||check)).join('; ')} <button class="quiet" data-case="${esc(finding.key)}">${t('Inspect rows','Ver linhas')}</button></p>`).join('')+`<details><summary>${t('View tool trail and model receipts','Ver ferramentas e comprovantes do modelo')}</summary><pre>${esc(JSON.stringify({trace:liveAnswer.trace,receipts:liveAnswer.receipts,policy:liveAnswer.explanationPolicy},null,2))}</pre></details>`;
     }catch(error:any){liveAnswer=null;$('#answer').textContent=error.message;}
@@ -113,6 +116,8 @@ $('#export').onclick=()=>{
 $('#schema').textContent=Object.entries(schemas).map(([kind,columns]:any)=>`${kind}.csv\n${columns.join(',')}`).join('\n\n');
 renderSources();
 updateMode();
-fetch('./api/status').then(async response=>{
+async function refreshConnection(){await fetch('./api/status').then(async response=>{
   if(!response.ok)return;const status=await response.json();if(status.live){live=true;runtimeState=status.nightshift.state;updateMode();}
-}).catch(()=>{});
+}).catch(()=>{});}
+$('#refresh').onclick=refreshConnection;
+refreshConnection();

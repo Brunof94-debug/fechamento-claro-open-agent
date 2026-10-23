@@ -6,20 +6,36 @@ New project for the **Open Agent Hackathon 2026**, primary track **The Agent Tha
 
 ## Current state
 
-In development. Event registration is confirmed and the solo team is formed. **No project submission has been made.**
+Working local prototype. Event registration is confirmed and the solo team is formed. A project draft is saved; final submission is tracked in [docs/READINESS.md](docs/READINESS.md).
 
-The intended product compares order, settlement and refund sources; investigates differences; preserves exact source citations; and requests missing information rather than inventing an explanation. Demonstration data is fictional. An accounting discrepancy is not proof of misconduct.
+The product compares order, settlement and refund sources, preserves exact source citations, and suggests the next evidence to request. Demonstration data is fictional. An accounting discrepancy is not proof of misconduct.
 
-The genuine local Zetaris engine registered and queried all three sources, joined their totals, and matched the independent integer-cent reconciliation. Actual Cursor review and resulting fixes are documented in [docs/CURSOR-REVIEW.md](docs/CURSOR-REVIEW.md). Meterless H-MEM is exercised; the installed Nightshift desktop Runtime still needs its first successful local model request. The investigator and provider are implemented but are not represented as fully integrated yet.
+The genuine local Zetaris engine registers and queries all three sources, joins their totals, and matches the independent integer-cent reconciliation. Actual Cursor review and resulting fixes are documented in [docs/CURSOR-REVIEW.md](docs/CURSOR-REVIEW.md). The Nightshift investigator executed real local Llama 3.1 8B requests, selected H-MEM retrieval, inspected source rows, and finished the A-1002 investigation with the checked R$10 difference. Additional live scenarios returned the source conflict for A-1006 and the not-yet-due status of A-1007. Receipts identify local execution. Model-generated amounts, causes and citations are never accepted as facts.
 
-Required sponsor work and proof limits are tracked in [docs/READINESS.md](docs/READINESS.md). Sanitized execution evidence is in `evidence/zetaris-close.json`.
+Required sponsor work and proof limits are tracked in [docs/READINESS.md](docs/READINESS.md). Sanitized execution evidence is in `evidence/zetaris-close.json`, `evidence/nightshift-connection.json`, `evidence/nightshift-investigation.json` and `evidence/nightshift-scenarios.json`.
+
+`npm run check:workflow` completed a fresh source registration and seven actual Zetaris queries, followed by three local Nightshift model turns. Its sanitized complete receipt is `evidence/live-workflow.json`. This check requires the private engine setup and has no mock fallback.
+
+[Watch the narrated demonstration](presentation/fechamento-claro-demo.mp4) · [View the six-slide pitch](presentation/fechamento-claro-open-agent-2026-10-23-v2.pptx)
+
+[Open the browser preview](https://brunof94-debug.github.io/fechamento-claro-open-agent/). It runs CSV rules and H-MEM in the browser. The complete Zetaris/Nightshift workflow runs on the local workspace described below; GitHub Pages cannot host those engines.
 
 ## Local development
 
 Node.js 22 or later. `npm ci`, `npm test`, `npm run build`, then `npm run dev` for the static browser preview.
 The preview binds to loopback only. It requires no paid API. For genuine sponsor integrations, follow [docs/LOCAL-SETUP.md](docs/LOCAL-SETUP.md) and run `npm run live`.
 
-18 automated tests pass. Stub-based provider/agent checks validate refusal behavior; actual engine execution is documented separately and never inferred from these tests.
+19 automated tests pass. Stub-based provider/agent checks validate refusal behavior; actual engine execution is documented separately and never inferred from these tests.
+
+## How the investigator works
+
+1. Strictly validate three source snapshots and retain every original row and physical CSV line.
+2. Register fresh namespaced Zetaris sources, query all records and join the amounts. Refuse a close if source provenance or any counted total disagrees with the independent cent calculation.
+3. Ask Nightshift to choose a search subject. Execute real Meterless H-MEM retrieval, then offer only retrieved cases for inspection.
+4. Ask the model to select case inspection and completion from a bounded set of available actions. Unknown choices are refused. Only inspected findings can reach the answer.
+5. Render checked calculations, original source rows, model receipts and next checks. Export an evidence bundle with the actual execution trail.
+
+This is a guided investigator, not an unrestricted agent. The small local model selects tools and evidence; it does not write an unchecked financial narrative. H-MEM is in memory for the current run. Only seven fictional orders are demonstrated; no production accuracy or time-saving claim is made.
 
 ## Event dates, verified at the start
 

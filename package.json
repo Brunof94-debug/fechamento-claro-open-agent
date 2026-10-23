@@ -9,7 +9,8 @@
     "test": "tsx --test tests/*.test.ts",
     "live": "tsx scripts/live-server.ts",
     "check:zetaris": "node scripts/check-zetaris-close.mjs",
-    "check:nightshift": "node scripts/check-nightshift.mjs"
+    "check:nightshift": "node scripts/check-nightshift.mjs",
+    "check:workflow": "tsx scripts/check-live-workflow.ts"
   },
   "devDependencies": {
     "esbuild": "0.28.2",

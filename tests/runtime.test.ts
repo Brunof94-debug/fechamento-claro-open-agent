@@ -16,16 +16,24 @@ test('runtime distinguishes rejected credentials and sends local-only routing he
     assert.equal(init.headers['meterless-app'],'fechamento-claro');
     assert.equal(init.headers['meterless-scope'],'user');
     assert.equal(JSON.parse(init.body).model,'meterless/local');
-    return new Response(JSON.stringify({model:'local-test',choices:[{message:{content:'ok'}}]}),{status:200});
+    return new Response(JSON.stringify({model:'local-test',choices:[{message:{content:'ok'}}],meterless:{winning_route:{kind:'local'},privacy:{path:'local-only'}}}),{status:200});
   }});
   assert.equal((await client.chat([{role:'user',content:'test'}])).content,'ok');
 });
-test('investigator refuses unseen citations and only returns checked source findings',async()=>{
+test('investigator rejects unavailable tool choices and only returns inspected source findings',async()=>{
   const sources=Object.fromEntries(['orders','settlements','refunds'].map(k=>[k,parseCSV(demo[k],k)]));
   const close={result:reconcile(sources,demo),zetaris:{executed:true}};
-  const actions=[{action:'finish',keys:['orders:A-1002']},{action:'inspect_case',key:'orders:A-1002'},{action:'finish',keys:['orders:A-1002']}];
+  const actions=[{choice:999},{choice:0},{choice:0},{choice:0}];
   const result=await investigate('Why A-1002?',close,{chat:async()=>({content:JSON.stringify(actions.shift()),receipt:{test:true}})});
-  assert.equal(result.trace[0].type,'rejected_action');assert.equal(result.findings[0].difference,1000);
+  assert.equal(result.trace[0].type,'invalid_model_output');assert.equal(result.findings[0].difference,1000);
+  assert.ok(result.trace.some(row=>row.tool==='Meterless H-MEM'));
   assert.ok(result.findings[0].evidence.some((row:any)=>row.file==='settlements.csv'&&row.line===3));
   assert.deepEqual(result.findings[0].nextChecks,['request_processor_statement','check_fee_contract']);
+  const wrongChoices=[{choice:2},{choice:0},{choice:0}];
+  await assert.rejects(()=>investigate('Why A-1002?',close,{chat:async()=>({content:JSON.stringify(wrongChoices.shift()),receipt:{test:true}})}),/No retrieved case|did not complete/);
+});
+
+test('a cloud or unconfirmed winning route cannot become an accepted local conclusion',async()=>{
+  const client=new Nightshift({token:'test-only',fetchImpl:async()=>new Response(JSON.stringify({model:'cloud-test',choices:[{message:{content:'ok'}}],meterless:{winning_route:{kind:'cloud'},privacy:{path:'cloud'}}}),{status:200})});
+  await assert.rejects(()=>client.chat([{role:'user',content:'fictional test'}]),{code:'non-local'});
 });

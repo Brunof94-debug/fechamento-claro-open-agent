@@ -1,0 +1,23 @@
+// Real engines only. Requires the private local setup described in docs/LOCAL-SETUP.md.
+import {readFile,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {demo} from '../src/fixtures.mjs';
+import {stageSources} from '../src/staging.mjs';
+import {loadZetarisClose} from '../src/zetaris.mjs';
+import {Nightshift} from '../src/nightshift.mjs';
+import {investigate} from '../src/investigator.ts';
+const files=Object.fromEntries(['orders','settlements','refunds'].map(kind=>[kind,{name:kind+'.csv',text:demo[kind]}]));
+const staged=await stageSources(files);
+const close=await loadZetarisClose(staged,demo);
+const config=JSON.parse(await readFile('.runtime/meterless-client.json','utf8'));
+const token=(await readFile(config.tokenFile,'utf8')).trim();
+const runtime=new Nightshift({baseURL:config.baseURL,token});
+const answer=await investigate('Why does order A-1002 have a difference, and what source rows support that finding?',close,runtime);
+assert.equal(answer.findings.length,1);
+assert.equal(answer.findings[0].key,'orders:A-1002');
+assert.equal(answer.findings[0].difference,1000);
+assert.ok(answer.trace.some(row=>row.tool==='Meterless H-MEM'));
+assert.ok(answer.trace.some(row=>row.tool==='inspect_case'));
+const proof={generatedAt:new Date().toISOString(),close,investigation:answer};
+await writeFile('evidence/live-workflow.json',JSON.stringify(proof,null,2),'utf8');
+console.log(JSON.stringify({zetaris:close.zetaris.executed,sqlQueries:close.zetaris.receipts.length,model:answer.receipts[0].model,modelTurns:answer.receipts.length,finding:answer.findings[0].key,differenceCents:1000}));

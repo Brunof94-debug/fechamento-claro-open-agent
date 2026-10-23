@@ -954,7 +954,7 @@
         "table": "fc_5d7817e0315549189c756d7dcc5ce0dd_orders",
         "sql": "CREATE LIGHTNING FILESTORE TABLE fc_5d7817e0315549189c756d7dcc5ce0dd_orders FROM FECHAMENTO_CLARO FORMAT CSV OPTIONS (path \"/home/zetaris/customer-data/shared/fechamento/fc_5d7817e0315549189c756d7dcc5ce0dd/orders.csv\", header \"true\", inferSchema \"false\", mode \"FAILFAST\")",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 250,
+        "elapsedMs": 3750,
         "completed": true,
         "action": "existing registered source"
       },
@@ -962,43 +962,43 @@
         "table": "fc_5d7817e0315549189c756d7dcc5ce0dd_settlements",
         "sql": "CREATE LIGHTNING FILESTORE TABLE fc_5d7817e0315549189c756d7dcc5ce0dd_settlements FROM FECHAMENTO_CLARO FORMAT CSV OPTIONS (path \"/home/zetaris/customer-data/shared/fechamento/fc_5d7817e0315549189c756d7dcc5ce0dd/settlements.csv\", header \"true\", inferSchema \"false\", mode \"FAILFAST\")",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 281,
+        "elapsedMs": 671,
         "completed": true,
-        "action": "registered new source"
+        "action": "existing registered source"
       },
       {
         "table": "fc_5d7817e0315549189c756d7dcc5ce0dd_refunds",
         "sql": "CREATE LIGHTNING FILESTORE TABLE fc_5d7817e0315549189c756d7dcc5ce0dd_refunds FROM FECHAMENTO_CLARO FORMAT CSV OPTIONS (path \"/home/zetaris/customer-data/shared/fechamento/fc_5d7817e0315549189c756d7dcc5ce0dd/refunds.csv\", header \"true\", inferSchema \"false\", mode \"FAILFAST\")",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 219,
+        "elapsedMs": 329,
         "completed": true,
-        "action": "registered new source"
+        "action": "existing registered source"
       },
       {
         "sql": "SELECT * FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_orders ORDER BY CAST(source_line AS INT)",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 609,
+        "elapsedMs": 1578,
         "rows": 7,
         "completed": true
       },
       {
         "sql": "SELECT * FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_settlements ORDER BY CAST(source_line AS INT)",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 312,
+        "elapsedMs": 375,
         "rows": 9,
         "completed": true
       },
       {
         "sql": "SELECT * FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_refunds ORDER BY CAST(source_line AS INT)",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 219,
+        "elapsedMs": 313,
         "rows": 1,
         "completed": true
       },
       {
         "sql": "WITH payments AS (SELECT order_id, SUM(CAST(net_cents AS BIGINT)) AS paid FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_settlements WHERE posted_date <= '2026-10-21' GROUP BY order_id), refunds AS (SELECT order_id, SUM(CAST(refund_cents AS BIGINT)) AS refunded FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_refunds WHERE posted_date <= '2026-10-21' GROUP BY order_id), duplicate_orders AS (SELECT order_id FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_orders GROUP BY order_id HAVING COUNT(*) > 1), duplicate_payments AS (SELECT txn_id FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_settlements GROUP BY txn_id HAVING COUNT(*) > 1), duplicate_refunds AS (SELECT refund_id FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_refunds GROUP BY refund_id HAVING COUNT(*) > 1) SELECT o.order_id, CAST(o.gross_cents AS BIGINT) - CAST(o.fee_cents AS BIGINT) - COALESCE(r.refunded,0) AS expected_cents, COALESCE(p.paid,0) AS observed_cents FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_orders o LEFT JOIN payments p ON o.order_id=p.order_id LEFT JOIN refunds r ON o.order_id=r.order_id WHERE o.order_id NOT IN (SELECT order_id FROM duplicate_orders) AND o.order_id NOT IN (SELECT order_id FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_settlements WHERE txn_id IN (SELECT txn_id FROM duplicate_payments)) AND o.order_id NOT IN (SELECT order_id FROM FECHAMENTO_CLARO.fc_5d7817e0315549189c756d7dcc5ce0dd_refunds WHERE refund_id IN (SELECT refund_id FROM duplicate_refunds)) ORDER BY o.order_id",
         "method": "official Zetaris JDBC",
-        "elapsedMs": 2297,
+        "elapsedMs": 4359,
         "rows": 6,
         "completed": true
       }
